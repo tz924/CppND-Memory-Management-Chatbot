@@ -56,27 +56,81 @@ ChatBot::~ChatBot() {
  */
 // TASK 2: 2. copy constructor
 ChatBot::ChatBot(const ChatBot &source) {
-  cout << "2. COPYING content of instance " << &source << " to instance "
-       << this << endl;
+  cout << "ChatBot Copy Constructor COPYING content of instance " << &source
+       << " to instance " << this << endl;
+  // deep copy image
+  _image = new wxBitmap(*source._image);
+
+  // copy data handles
+  _chatLogic = source._chatLogic;
+  _rootNode = source._rootNode;
+  _currentNode = source._currentNode;
 }
 
 // TASK 2: 3. copy assignment operator
 ChatBot &ChatBot::operator=(const ChatBot &source) {
-  cout << "3. ASSIGNING content of instance " << &source << " to instance "
-       << this << endl;
+  cout << "ChatBot Copy Assignment Operator ASSIGNING content of instance "
+       << &source << " to instance " << this << endl;
+
+  // Do nothing if same address
+  if (this == &source)
+    return *this;
+
+  // deallocate image if one exists on heap
+  if (_image != NULL)
+    delete _image;
+
+  // deep copy image
+  _image = new wxBitmap(*source._image);
+
+  // copy data handles
+  _chatLogic = source._chatLogic;
+  _rootNode = source._rootNode;
+  _currentNode = source._currentNode;
+
   return *this;
 }
 
 // TASK 2: 4. move constructor
 ChatBot::ChatBot(ChatBot &&source) {
-  cout << "4. MOVING instance " << &source << " to instance " << this << endl;
+  cout << "ChatBot Move Constructor MOVING instance " << &source
+       << " to instance " << this << endl;
+
+  // move data handles
+  _image = source._image;
+  _chatLogic = source._chatLogic;
+  _rootNode = source._rootNode;
+  _currentNode = source._currentNode;
+
+  // invalidate data handles on source
+  source._image = nullptr;
+  source._chatLogic = nullptr;
+  source._rootNode = nullptr;
+  source._currentNode = nullptr;
 }
 
 // TASK 2: 5. move assignment operator
 ChatBot &ChatBot::operator=(ChatBot &&source) {
-  cout << "5. MOVING (assign) instance " << &source << " to instance " << this
-       << endl;
-  return source;
+  cout << "ChatBot Move Assignment Operator MOVING instance " << &source
+       << " to instance " << this << endl;
+
+  // Do nothing if same address
+  if (this == &source)
+    return *this;
+
+  // move data handles
+  _image = source._image;
+  _chatLogic = source._chatLogic;
+  _rootNode = source._rootNode;
+  _currentNode = source._currentNode;
+
+  // invalidate data handles on source
+  source._image = nullptr;
+  source._chatLogic = nullptr;
+  source._rootNode = nullptr;
+  source._currentNode = nullptr;
+
+  return *this;
 }
 ////
 //// EOF STUDENT CODE
